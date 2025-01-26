@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacker Terminal</title>
+  <style>
+    /* Terminal-like Style */
+    body {
+      background-color: black;
+      color: #00ff00;
+      font-family: "Courier New", Courier, monospace;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+    }
+
+    #terminal {
+      padding: 20px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    #commandLine {
+      display: flex;
+    }
+
+    #commandInput {
+      background-color: black;
+      color: #00ff00;
+      border: none;
+      outline: none;
+      flex-grow: 1;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 1rem;
+    }
+
+    #commandInput::placeholder {
+      color: #888;
+    }
+
+    .commandOutput {
+      white-space: pre-wrap;
+    }
+
+    .prompt {
+      color: #00ff00;
+    }
+
+    .hint {
+      color: #ff0000;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Styles for user input */
+    #input-container {
+      margin-top: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="terminal">
+    <div class="commandOutput">
+      <p class="prompt">Welcome to the Hacker Terminal!</p>
+      <p class="prompt">Type `ls` to list files, `put`, `update`, and `show` for more options.</p>
+    </div>
+
+    <div id="commandLine">
+      <p class="prompt">user@terminal:~$ </p>
+      <input type="text" id="commandInput" placeholder="Enter command..." autofocus />
+    </div>
+
+    <div id="input-container" class="hidden">
+      <p>Encrypted message: <span id="encryptedMessage">SGVsbG9XaW5uZXJfQmluZ29fS2lw</span></p>
+      <input type="text" id="decryptedMessage" placeholder="Enter decrypted message" />
+      <button onclick="submitDecryption()">Submit</button>
+    </div>
+  </div>
+
+  <script>
+    const terminalOutput = document.querySelector(".commandOutput");
+    const commandInput = document.getElementById("commandInput");
+    const encryptedMessageContainer = document.getElementById("input-container");
+    const encryptedMessageElement = document.getElementById("encryptedMessage");
+    const decryptedMessageInput = document.getElementById("decryptedMessage");
+
+    const fakeFiles = ["flag.txt", "file1.php", "file2.php", "readme.md"];
+    const encryptedMessage = "SGVsbG9XaW5uZXJfQmluZ29fS2lw"; 
+
+    // Command handler
+    commandInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const command = commandInput.value.trim();
+        processCommand(command);
+        commandInput.value = ''; 
+      }
+    });
+
+    // Function to process the command
+    function processCommand(command) {
+      if (command === "ls") {
+        showFiles();
+      } else if (command === "put") {
+        terminalOutput.innerHTML += "<p class='hint'>not work</p>";
+      } else if (command === "update") {
+        terminalOutput.innerHTML += "<p class='hint'>not work</p>";
+    
+      } else if (command === "show flag.txt") {
+        showEncryptedMessage();
+      } else {
+        terminalOutput.innerHTML += "<p class='hint'>Command not recognized. Try `ls`, `put`, `update`, or `show`.</p>";
+      }
+      scrollToBottom();
+    }
+
+    // Show the list of files
+    function showFiles() {
+      terminalOutput.innerHTML += "<p class='commandOutput'>flag.txt  file1.php  file2.php  readme.md</p>";
+      scrollToBottom();
+    }
+
+    // Show the encrypted message
+    function showEncryptedMessage() {
+      terminalOutput.innerHTML += "<p class='commandOutput'>Encrypted message has been displayed. Type `decrypt` to solve.</p>";
+      encryptedMessageContainer.classList.remove("hidden");
+      scrollToBottom();
+    }
+
+    // Submit the decrypted message
+    function submitDecryption() {
+      const decryptedMessage = decryptedMessageInput.value.trim();
+      if (decryptedMessage === "HelloWinner_Bingo_Kip") { // Check if the decryption is correct
+        window.location.href = "https://t.me/Bingo_kip077"; // Redirect to another page after successful decryption
+      } else {
+        terminalOutput.innerHTML += "<p class='hint'>Incorrect decryption. Try again!</p>";
+        decryptedMessageInput.value = ''; // Clear the input field
+        scrollToBottom();
+      }
+    }
+
+    // Function to scroll to the bottom of the terminal
+    function scrollToBottom() {
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+  </script>
+</body>
+</html>
