@@ -146,6 +146,54 @@
     function scrollToBottom() {
       terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
+
+        // Disable right-click
+        document.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+        });
+    
+        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, etc.
+        document.addEventListener('keydown', (e) => {
+          if (
+            e.key === "F12" || // F12 key
+            (e.ctrlKey && e.shiftKey && e.key === "I") || // Ctrl+Shift+I
+            (e.ctrlKey && e.shiftKey && e.key === "J") || // Ctrl+Shift+J
+            (e.ctrlKey && e.key === "U") // Ctrl+U (view source)
+          ) {
+            e.preventDefault();
+            alert("Action disabled for security reasons.");
+          }
+        });
+    
+        // Prevent Dragging
+        document.addEventListener('dragstart', (e) => {
+          e.preventDefault();
+        });
+    
+        // Continuous debugging detection
+        setInterval(() => {
+          const before = new Date();
+          debugger; // Open dev tools triggers pause here
+          const after = new Date();
+          if (after - before > 100) {
+            alert("Debugging detected! This page will self-destruct.");
+            window.location.href = "about:blank"; // Redirect to an empty page
+          }
+        }, 500);
+    
+        // Blur the page when dev tools is opened
+        const devToolsDetector = () => {
+          const widthThreshold = window.outerWidth - window.innerWidth > 100;
+          const heightThreshold = window.outerHeight - window.innerHeight > 100;
+          if (widthThreshold || heightThreshold) {
+            alert("DevTools detected! Closing page for security.");
+            window.close(); // Close the tab
+          }
+        };
+    
+        // Run detection when window is resized
+        window.onresize = devToolsDetector;
+      
   </script>
 </body>
 </html>
